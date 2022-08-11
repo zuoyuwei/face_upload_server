@@ -1,7 +1,6 @@
 package example
 
 import (
-	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -13,25 +12,33 @@ import (
 
 type FileUploadAndDownloadApi struct{}
 
+type FilePatientCode struct {
+	PatientCode string `json:"patientCode" form:"patientCode"`       // 患者编号
+	Type        string `json:"type" form:"type" gorm:"comment:文件类型"` // 文件类型(image, video)
+}
+
 // @Tags ExaFileUploadAndDownload
 // @Summary 上传文件示例
 // @Security ApiKeyAuth
 // @accept multipart/form-data
 // @Produce  application/json
 // @Param file formData file true "上传文件示例"
+// @Param data query FilePatientCode true "患者编号,文件类型"
 // @Success 200 {object} response.Response{data=exampleRes.ExaFileResponse,msg=string} "上传文件示例,返回包括文件详情"
 // @Router /fileUploadAndDownload/upload [post]
 func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
 	var file example.ExaFileUploadAndDownload
-	fmt.Println(c)
+	//fmt.Println(c)
 	noSave := c.DefaultQuery("noSave", "0")
 	_, header, err := c.Request.FormFile("file")
+	patientcode := c.Request.FormValue("patientCode")
+	t := c.Request.FormValue("type")
 	if err != nil {
 		global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
 		response.FailWithMessage("接收文件失败", c)
 		return
 	}
-	file, err = fileUploadAndDownloadService.UploadFile(header, noSave) // 文件上传后拿到文件路径
+	file, err = fileUploadAndDownloadService.UploadFile(header, noSave, patientcode, t) // 文件上传后拿到文件路径
 	if err != nil {
 		global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
 		response.FailWithMessage("修改数据库链接失败", c)

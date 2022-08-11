@@ -25,6 +25,12 @@ func (i *DBApi) InitDB(c *gin.Context) {
 		return
 	}
 	var dbInfo request.InitDB
+	//dbInfo.Host = "127.0.0.1"
+	//dbInfo.Port = "3306"
+	//dbInfo.Password = "z160730"
+	//dbInfo.DBName = "db_temp"
+	//dbInfo.UserName = "root"
+	//dbInfo.DBType = "mysql"
 	if err := c.ShouldBindJSON(&dbInfo); err != nil {
 		global.GVA_LOG.Error("参数校验不通过!", zap.Error(err))
 		response.FailWithMessage("参数校验不通过", c)

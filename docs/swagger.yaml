@@ -537,8 +537,14 @@ definitions:
       name:
         description: 文件名
         type: string
+      patientCode:
+        description: 患者编号
+        type: string
       tag:
         description: 文件标签
+        type: string
+      type:
+        description: 文件类型(image, video)
         type: string
       updatedAt:
         description: 更新时间
@@ -606,6 +612,26 @@ definitions:
         type: string
       url:
         description: 图片地址
+        type: string
+    type: object
+  model.FtpFile:
+    properties:
+      createdAt:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      lujing:
+        type: string
+      shangchuanrenid:
+        type: integer
+      updatedAt:
+        description: 更新时间
+        type: string
+      wenjianid:
+        type: integer
+      wenjianming:
         type: string
     type: object
   request.AddMenuAuthorityInfo:
@@ -3143,6 +3169,62 @@ paths:
       summary: 加载Excel数据
       tags:
       - excel
+  /fileDown/fileDown:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 下载文件地址, 文件名
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.FtpFile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 下载文件
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 下载文件
+      tags:
+      - PersonalUploadFile
+  /fileUpload/fileUpload:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 上传文件地址, 文件名
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.FtpFile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 上传文件
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 上传文件
+      tags:
+      - PersonalUploadFile
   /fileUploadAndDownload/breakpointContinue:
     post:
       consumes:
@@ -3292,6 +3374,14 @@ paths:
         name: file
         required: true
         type: file
+      - description: 患者编号
+        in: query
+        name: patientCode
+        type: string
+      - description: 文件类型(image, video)
+        in: query
+        name: type
+        type: string
       produces:
       - application/json
       responses:

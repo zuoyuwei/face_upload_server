@@ -2978,6 +2978,106 @@ const docTemplate = `{
                 }
             }
         },
+        "/fileDown/fileDown": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersonalUploadFile"
+                ],
+                "summary": "下载文件",
+                "parameters": [
+                    {
+                        "description": "下载文件地址, 文件名",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FtpFile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "下载文件",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/fileUpload/fileUpload": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersonalUploadFile"
+                ],
+                "summary": "上传文件",
+                "parameters": [
+                    {
+                        "description": "上传文件地址, 文件名",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FtpFile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "上传文件",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/fileUploadAndDownload/breakpointContinue": {
             "post": {
                 "security": [
@@ -3249,6 +3349,18 @@ const docTemplate = `{
                         "name": "file",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "患者编号",
+                        "name": "patientCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "文件类型(image, video)",
+                        "name": "type",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -6386,8 +6498,16 @@ const docTemplate = `{
                     "description": "文件名",
                     "type": "string"
                 },
+                "patientCode": {
+                    "description": "患者编号",
+                    "type": "string"
+                },
                 "tag": {
                     "description": "文件标签",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "文件类型(image, video)",
                     "type": "string"
                 },
                 "updatedAt": {
@@ -6482,6 +6602,35 @@ const docTemplate = `{
                 },
                 "url": {
                     "description": "图片地址",
+                    "type": "string"
+                }
+            }
+        },
+        "model.FtpFile": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "lujing": {
+                    "type": "string"
+                },
+                "shangchuanrenid": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "wenjianid": {
+                    "type": "integer"
+                },
+                "wenjianming": {
                     "type": "string"
                 }
             }

@@ -92,8 +92,8 @@ mysql:
   port: "3306"
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: db_temp
-  username: root
-  password: z160730
+  username: lab
+  password: 123456
   max-idle-conns: 10
   max-open-conns: 100
   log-mode: error
