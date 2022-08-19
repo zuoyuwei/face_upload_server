@@ -74,7 +74,7 @@ email:
 excel:
   dir: ./resource/excel/
 hua-wei-obs:
-  path: face-shengli
+  path: face-shengli/test
   bucket: face-shengli
   endpoint: obs.cn-north-4.myhuaweicloud.com
   access-key: 3MM9TRVXG47HCOWVRDSE

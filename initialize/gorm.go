@@ -55,6 +55,7 @@ func RegisterTables(db *gorm.DB) {
 		face.FacePatient{},
 		face.FacePhoto{},
 		face.FaceVideo{},
+		face.FaceMedicalRecord{},
 		model.FtpFile{},
 
 		// 自动化模块表

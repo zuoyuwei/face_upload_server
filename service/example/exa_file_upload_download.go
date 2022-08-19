@@ -88,7 +88,7 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageIn
 //@param: header *multipart.FileHeader, noSave string
 //@return: file model.ExaFileUploadAndDownload, err error
 
-func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string, patientcode string, t string) (file example.ExaFileUploadAndDownload, err error) {
+func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string, MedicalRecordId int, patientcode string, t string) (file example.ExaFileUploadAndDownload, err error) {
 	oss := upload.NewOss()
 	filePath, key, uploadErr := oss.UploadFile(header)
 	if uploadErr != nil {
@@ -97,12 +97,13 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 	if noSave == "0" {
 		s := strings.Split(header.Filename, ".")
 		f := example.ExaFileUploadAndDownload{
-			PatientCode: patientcode,
-			Type:        t,
-			Url:         filePath,
-			Name:        header.Filename,
-			Tag:         s[len(s)-1],
-			Key:         key,
+			MedicalRecordId: MedicalRecordId,
+			PatientCode:     patientcode,
+			Type:            t,
+			Url:             filePath,
+			Name:            header.Filename,
+			Tag:             s[len(s)-1],
+			Key:             key,
 		}
 		return f, e.Upload(f)
 	}

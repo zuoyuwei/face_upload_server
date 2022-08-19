@@ -6,8 +6,10 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	exampleRes "github.com/flipped-aurora/gin-vue-admin/server/model/example/response"
+	modelFace "github.com/flipped-aurora/gin-vue-admin/server/model/face"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"mime/multipart"
 )
 
 type FileUploadAndDownloadApi struct{}
@@ -28,23 +30,45 @@ type FilePatientCode struct {
 // @Router /fileUploadAndDownload/upload [post]
 func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
 	var file example.ExaFileUploadAndDownload
-	//fmt.Println(c)
 	noSave := c.DefaultQuery("noSave", "0")
 	_, header, err := c.Request.FormFile("file")
 	patientcode := c.Request.FormValue("patientCode")
-	t := c.Request.FormValue("type")
+	tp := c.Request.FormValue("type")
 	if err != nil {
 		global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
 		response.FailWithMessage("接收文件失败", c)
 		return
 	}
-	file, err = fileUploadAndDownloadService.UploadFile(header, noSave, patientcode, t) // 文件上传后拿到文件路径
+	//file, err = fileUploadAndDownloadService.UploadFile(header, noSave, patientcode, tp) // 文件上传后拿到文件路径
+	file, err = UploadFile_Son(header, noSave, patientcode, tp)
 	if err != nil {
 		global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
 		response.FailWithMessage("修改数据库链接失败", c)
 		return
 	}
 	response.OkWithDetailed(exampleRes.ExaFileResponse{File: file}, "上传成功", c)
+}
+
+func UploadFile_Son(header *multipart.FileHeader, noSave string, patientcode string, t string) (file example.ExaFileUploadAndDownload, err error) {
+	// 根据患者编号查询是否有此患者
+	patientId := 0
+	medicalRecordId := 0
+	face_med_rec, err := faceMedicalRecordService.FindFaceMedicalRecord(patientcode)
+	medicalRecordId = int(face_med_rec.ID)
+	// 如果有，继续下一步，如果没有，就新建患者
+	if medicalRecordId == 0 {
+		var FacePatient modelFace.FacePatient
+		FacePatient.PatientCode = patientcode
+		patientId, err = facePatientService.CreateFacePatient(FacePatient)
+
+		var FaceMedicalRecord modelFace.FaceMedicalRecord
+		FaceMedicalRecord.PatientCode = patientcode
+		FaceMedicalRecord.PatientId = patientId
+		medicalRecordId, err = faceMedicalRecordService.CreateFaceMedicalRecord(FaceMedicalRecord)
+	}
+	// 建立联系
+	file, err = fileUploadAndDownloadService.UploadFile(header, noSave, medicalRecordId, patientcode, t) // 文件上传后拿到文件路径
+	return file, err
 }
 
 // EditFileName 编辑文件名或者备注

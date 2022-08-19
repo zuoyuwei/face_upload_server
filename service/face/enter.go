@@ -5,4 +5,5 @@ type ServiceGroup struct {
 	FacePhotoService
 	FaceVideoService
 	FileUploadService
+	FaceMedicalRecordService
 }

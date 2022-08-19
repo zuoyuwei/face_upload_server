@@ -26,7 +26,7 @@ func (o *_obs) UploadFile(file *multipart.FileHeader) (filename string, filepath
 		PutObjectBasicInput: obs.PutObjectBasicInput{
 			ObjectOperationInput: obs.ObjectOperationInput{
 				Bucket: global.GVA_CONFIG.HuaWeiObs.Bucket,
-				Key:    filename,
+				Key:    global.GVA_CONFIG.HuaWeiObs.Path + "/" + filename,
 			},
 			ContentType: file.Header.Get("content-type"),
 		},

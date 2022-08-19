@@ -14,9 +14,9 @@ type FacePatientService struct{}
 //@param: e model.FacePatient
 //@return: err error
 
-func (exa *FacePatientService) CreateFacePatient(e face.FacePatient) (err error) {
+func (exa *FacePatientService) CreateFacePatient(e face.FacePatient) (id int, err error) {
 	err = global.GVA_DB.Create(&e).Error
-	return err
+	return int(e.ID), err
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -49,6 +49,17 @@ func (exa *FacePatientService) UpdateFacePatient(e *face.FacePatient) (err error
 
 func (exa *FacePatientService) GetFacePatient(id uint) (FacePatient face.FacePatient, err error) {
 	err = global.GVA_DB.Where("id = ?", id).First(&FacePatient).Error
+	return
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: FindFacePatient
+//@description: 根据患者编号查询患者信息
+//@param: patientcode string
+//@return: FacePatient model.FacePatient, err error
+
+func (exa *FacePatientService) FindFacePatient(patientcode string) (FacePatient face.FacePatient, err error) {
+	err = global.GVA_DB.Where("patient_code = ?", patientcode).First(&FacePatient).Error
 	return
 }
 

@@ -525,6 +525,9 @@ definitions:
     type: object
   example.ExaFileUploadAndDownload:
     properties:
+      MedicalRecordId:
+        description: 病历ID
+        type: integer
       createdAt:
         description: 创建时间
         type: string
@@ -563,8 +566,13 @@ definitions:
           $ref: '#/definitions/system.SysBaseMenu'
         type: array
     type: object
-  face.FacePatient:
+  face.FaceMedicalRecord:
     properties:
+      FileList:
+        description: 文件列表
+        items:
+          $ref: '#/definitions/example.ExaFileUploadAndDownload'
+        type: array
       PatientName:
         description: 客户名
         type: string
@@ -574,6 +582,56 @@ definitions:
       id:
         description: 主键ID
         type: integer
+      isadenoidbodylarge:
+        description: 有无腺样体肥大
+        type: string
+      isopenmouthbreathe:
+        description: 是否张口呼吸
+        type: string
+      isteethwhitedeposit:
+        description: 牙齿有无白色沉积
+        type: string
+      patientCode:
+        description: 患者编号
+        type: string
+      patientId:
+        description: 患者ID
+        type: integer
+      tonsildegree:
+        description: 扁桃体级别
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+    type: object
+  face.FacePatient:
+    properties:
+      Age:
+        description: 年龄
+        type: integer
+      Gender:
+        description: 性别
+        type: string
+      PatientName:
+        description: 客户名
+        type: string
+      PhoneNumber:
+        description: 联系方式
+        type: string
+      createdAt:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      medicalRecordList:
+        description: 病历列表
+        items:
+          $ref: '#/definitions/face.FaceMedicalRecord'
+        type: array
+      patientCode:
+        description: 患者编号
+        type: string
       updatedAt:
         description: 更新时间
         type: string
@@ -734,6 +792,9 @@ definitions:
     type: object
   request.PageInfo:
     properties:
+      guanlianid:
+        description: 关联Id
+        type: integer
       keyword:
         description: 关键字
         type: string
@@ -786,6 +847,9 @@ definitions:
       description:
         description: api中文描述
         type: string
+      guanlianid:
+        description: 关联Id
+        type: integer
       id:
         description: 主键ID
         type: integer
@@ -840,6 +904,9 @@ definitions:
     type: object
   request.SysAutoHistory:
     properties:
+      guanlianid:
+        description: 关联Id
+        type: integer
       keyword:
         description: 关键字
         type: string
@@ -871,6 +938,11 @@ definitions:
     properties:
       file:
         $ref: '#/definitions/example.ExaFileUploadAndDownload'
+    type: object
+  response.FaceMedicalRecordResponse:
+    properties:
+      FaceMedicalRecord:
+        $ref: '#/definitions/face.FaceMedicalRecord'
     type: object
   response.FacePatientResponse:
     properties:
@@ -1482,6 +1554,191 @@ info:
   title: Swagger Example API
   version: 0.0.1
 paths:
+  /FaceMedicalRecord/FaceMedicalRecord:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 病历ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/face.FaceMedicalRecord'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除病历
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除病历
+      tags:
+      - FaceMedicalRecord
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 客户名
+        in: query
+        name: PatientName
+        type: string
+      - description: 创建时间
+        in: query
+        name: createdAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: id
+        type: integer
+      - description: 有无腺样体肥大
+        in: query
+        name: isadenoidbodylarge
+        type: string
+      - description: 是否张口呼吸
+        in: query
+        name: isopenmouthbreathe
+        type: string
+      - description: 牙齿有无白色沉积
+        in: query
+        name: isteethwhitedeposit
+        type: string
+      - description: 患者编号
+        in: query
+        name: patientCode
+        type: string
+      - description: 患者ID
+        in: query
+        name: patientId
+        type: integer
+      - description: 扁桃体级别
+        in: query
+        name: tonsildegree
+        type: string
+      - description: 更新时间
+        in: query
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取单一病历信息,返回包括病历详情
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.FaceMedicalRecordResponse'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取单一病历信息
+      tags:
+      - FaceMedicalRecord
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 病历用户名, 病历手机号码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/face.FaceMedicalRecord'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建病历
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 创建病历
+      tags:
+      - FaceMedicalRecord
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 病历ID, 病历信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/face.FaceMedicalRecord'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新病历信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新病历信息
+      tags:
+      - FaceMedicalRecord
+  /FaceMedicalRecord/FaceMedicalRecordList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
+      - description: 关键字
+        in: query
+        name: keyword
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分页获取权限病历列表,返回包括列表,总数,页码,每页数量
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PageResult'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取权限病历列表
+      tags:
+      - FaceMedicalRecord
   /FacePatient/FacePatient:
     delete:
       consumes:
@@ -1514,9 +1771,21 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 年龄
+        in: query
+        name: Age
+        type: integer
+      - description: 性别
+        in: query
+        name: Gender
+        type: string
       - description: 客户名
         in: query
         name: PatientName
+        type: string
+      - description: 联系方式
+        in: query
+        name: PhoneNumber
         type: string
       - description: 创建时间
         in: query
@@ -1526,6 +1795,10 @@ paths:
         in: query
         name: id
         type: integer
+      - description: 患者编号
+        in: query
+        name: patientCode
+        type: string
       - description: 更新时间
         in: query
         name: updatedAt
@@ -1608,6 +1881,10 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 关键字
         in: query
         name: keyword
@@ -1769,6 +2046,10 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 关键字
         in: query
         name: keyword
@@ -1930,6 +2211,10 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 关键字
         in: query
         name: keyword
@@ -3014,6 +3299,10 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 关键字
         in: query
         name: keyword
@@ -3847,6 +4136,10 @@ paths:
         in: query
         name: desc
         type: string
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 主键ID
         in: query
         name: id
@@ -4048,6 +4341,10 @@ paths:
         in: query
         name: createdAt
         type: string
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 主键ID
         in: query
         name: id
@@ -4317,6 +4614,10 @@ paths:
         in: query
         name: error_message
         type: string
+      - description: 关联Id
+        in: query
+        name: guanlianid
+        type: integer
       - description: 主键ID
         in: query
         name: id

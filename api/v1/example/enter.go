@@ -12,4 +12,6 @@ var (
 	excelService                 = service.ServiceGroupApp.ExampleServiceGroup.ExcelService
 	customerService              = service.ServiceGroupApp.ExampleServiceGroup.CustomerService
 	fileUploadAndDownloadService = service.ServiceGroupApp.ExampleServiceGroup.FileUploadAndDownloadService
+	facePatientService           = service.ServiceGroupApp.FaceServiceGroup.FacePatientService
+	faceMedicalRecordService     = service.ServiceGroupApp.FaceServiceGroup.FaceMedicalRecordService
 )

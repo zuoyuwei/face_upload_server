@@ -16,6 +16,322 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/FaceMedicalRecord/FaceMedicalRecord": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FaceMedicalRecord"
+                ],
+                "summary": "获取单一病历信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "客户名",
+                        "name": "PatientName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "createdAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "有无腺样体肥大",
+                        "name": "isadenoidbodylarge",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "是否张口呼吸",
+                        "name": "isopenmouthbreathe",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "牙齿有无白色沉积",
+                        "name": "isteethwhitedeposit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "患者编号",
+                        "name": "patientCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "患者ID",
+                        "name": "patientId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "扁桃体级别",
+                        "name": "tonsildegree",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "updatedAt",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "获取单一病历信息,返回包括病历详情",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.FaceMedicalRecordResponse"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FaceMedicalRecord"
+                ],
+                "summary": "更新病历信息",
+                "parameters": [
+                    {
+                        "description": "病历ID, 病历信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/face.FaceMedicalRecord"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新病历信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FaceMedicalRecord"
+                ],
+                "summary": "创建病历",
+                "parameters": [
+                    {
+                        "description": "病历用户名, 病历手机号码",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/face.FaceMedicalRecord"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建病历",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FaceMedicalRecord"
+                ],
+                "summary": "删除病历",
+                "parameters": [
+                    {
+                        "description": "病历ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/face.FaceMedicalRecord"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除病历",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/FaceMedicalRecord/FaceMedicalRecordList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FaceMedicalRecord"
+                ],
+                "summary": "分页获取权限病历列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键字",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分页获取权限病历列表,返回包括列表,总数,页码,每页数量",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.PageResult"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/FacePatient/FacePatient": {
             "get": {
                 "security": [
@@ -35,9 +351,27 @@ const docTemplate = `{
                 "summary": "获取单一患者信息",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "年龄",
+                        "name": "Age",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "性别",
+                        "name": "Gender",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "description": "客户名",
                         "name": "PatientName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "联系方式",
+                        "name": "PhoneNumber",
                         "in": "query"
                     },
                     {
@@ -50,6 +384,12 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "主键ID",
                         "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "患者编号",
+                        "name": "patientCode",
                         "in": "query"
                     },
                     {
@@ -246,6 +586,12 @@ const docTemplate = `{
                 ],
                 "summary": "分页获取权限患者列表",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
+                        "in": "query"
+                    },
                     {
                         "type": "string",
                         "description": "关键字",
@@ -527,6 +873,12 @@ const docTemplate = `{
                 "summary": "分页获取权限图片列表",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "description": "关键字",
                         "name": "keyword",
@@ -806,6 +1158,12 @@ const docTemplate = `{
                 ],
                 "summary": "分页获取权限视频列表",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
+                        "in": "query"
+                    },
                     {
                         "type": "string",
                         "description": "关键字",
@@ -2721,6 +3079,12 @@ const docTemplate = `{
                 "summary": "分页获取权限客户列表",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "description": "关键字",
                         "name": "keyword",
@@ -4183,6 +4547,12 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "description": "主键ID",
                         "name": "id",
                         "in": "query"
@@ -4520,6 +4890,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "创建时间",
                         "name": "createdAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
                         "in": "query"
                     },
                     {
@@ -4971,6 +5347,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "错误信息",
                         "name": "error_message",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "关联Id",
+                        "name": "guanlianid",
                         "in": "query"
                     },
                     {
@@ -6482,6 +6864,10 @@ const docTemplate = `{
         "example.ExaFileUploadAndDownload": {
             "type": "object",
             "properties": {
+                "MedicalRecordId": {
+                    "description": "病历ID",
+                    "type": "integer"
+                },
                 "createdAt": {
                     "description": "创建时间",
                     "type": "string"
@@ -6535,9 +6921,16 @@ const docTemplate = `{
                 }
             }
         },
-        "face.FacePatient": {
+        "face.FaceMedicalRecord": {
             "type": "object",
             "properties": {
+                "FileList": {
+                    "description": "文件列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/example.ExaFileUploadAndDownload"
+                    }
+                },
                 "PatientName": {
                     "description": "客户名",
                     "type": "string"
@@ -6549,6 +6942,74 @@ const docTemplate = `{
                 "id": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "isadenoidbodylarge": {
+                    "description": "有无腺样体肥大",
+                    "type": "string"
+                },
+                "isopenmouthbreathe": {
+                    "description": "是否张口呼吸",
+                    "type": "string"
+                },
+                "isteethwhitedeposit": {
+                    "description": "牙齿有无白色沉积",
+                    "type": "string"
+                },
+                "patientCode": {
+                    "description": "患者编号",
+                    "type": "string"
+                },
+                "patientId": {
+                    "description": "患者ID",
+                    "type": "integer"
+                },
+                "tonsildegree": {
+                    "description": "扁桃体级别",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "face.FacePatient": {
+            "type": "object",
+            "properties": {
+                "Age": {
+                    "description": "年龄",
+                    "type": "integer"
+                },
+                "Gender": {
+                    "description": "性别",
+                    "type": "string"
+                },
+                "PatientName": {
+                    "description": "客户名",
+                    "type": "string"
+                },
+                "PhoneNumber": {
+                    "description": "联系方式",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "medicalRecordList": {
+                    "description": "病历列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/face.FaceMedicalRecord"
+                    }
+                },
+                "patientCode": {
+                    "description": "患者编号",
+                    "type": "string"
                 },
                 "updatedAt": {
                     "description": "更新时间",
@@ -6780,6 +7241,10 @@ const docTemplate = `{
         "request.PageInfo": {
             "type": "object",
             "properties": {
+                "guanlianid": {
+                    "description": "关联Id",
+                    "type": "integer"
+                },
                 "keyword": {
                     "description": "关键字",
                     "type": "string"
@@ -6854,6 +7319,10 @@ const docTemplate = `{
                 "description": {
                     "description": "api中文描述",
                     "type": "string"
+                },
+                "guanlianid": {
+                    "description": "关联Id",
+                    "type": "integer"
                 },
                 "id": {
                     "description": "主键ID",
@@ -6933,6 +7402,10 @@ const docTemplate = `{
         "request.SysAutoHistory": {
             "type": "object",
             "properties": {
+                "guanlianid": {
+                    "description": "关联Id",
+                    "type": "integer"
+                },
                 "keyword": {
                     "description": "关键字",
                     "type": "string"
@@ -6977,6 +7450,14 @@ const docTemplate = `{
             "properties": {
                 "file": {
                     "$ref": "#/definitions/example.ExaFileUploadAndDownload"
+                }
+            }
+        },
+        "response.FaceMedicalRecordResponse": {
+            "type": "object",
+            "properties": {
+                "FaceMedicalRecord": {
+                    "$ref": "#/definitions/face.FaceMedicalRecord"
                 }
             }
         },

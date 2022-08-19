@@ -31,7 +31,7 @@ func (e *FacePatientApi) CreateFacePatient(c *gin.Context) {
 	//}
 	//FacePatient.SysUserID = utils.GetUserID(c)
 	//FacePatient.SysUserAuthorityID = utils.GetUserAuthorityId(c)
-	if err := facePatientService.CreateFacePatient(FacePatient); err != nil {
+	if _, err := facePatientService.CreateFacePatient(FacePatient); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
@@ -104,13 +104,23 @@ func (e *FacePatientApi) GetFacePatient(c *gin.Context) {
 	//	response.FailWithMessage(err.Error(), c)
 	//	return
 	//}
-	data, err := facePatientService.GetFacePatient(FacePatient.ID)
+	//data, err := facePatientService.GetFacePatient(FacePatient.ID)
+	data, err := GetFacePatient_Son(FacePatient.ID)
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(faceRes.FacePatientResponse{FacePatient: data}, "获取成功", c)
 	}
+}
+
+func GetFacePatient_Son(patientId uint) (patient face.FacePatient, err error) {
+	patient, err = facePatientService.GetFacePatient(patientId)
+	var pageInfo request.PageInfo
+	pageInfo.GuanLianId = int(patient.ID)
+	FaceMedicalRecordList, _, err := faceMedicalRecordService.GetFaceMedicalRecordInfoList_A(0, pageInfo)
+	patient.MedicalRecordList = FaceMedicalRecordList
+	return
 }
 
 // @Tags FacePatient
