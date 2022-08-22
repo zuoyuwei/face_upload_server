@@ -1,6 +1,7 @@
 package face
 
 import (
+	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -20,10 +21,11 @@ type FacePatientApi struct{}
 // @Produce application/json
 // @Param data body face.FacePatient true "患者用户名, 患者手机号码"
 // @Success 200 {object} response.Response{msg=string} "创建患者"
-// @Router /FacePatient/FacePatient [post]
+// @Router /facePatient/facePatient [post]
 func (e *FacePatientApi) CreateFacePatient(c *gin.Context) {
 	//fmt.Println("test")
 	var FacePatient face.FacePatient
+	//fmt.Println(c.Request)
 	_ = c.ShouldBindJSON(&FacePatient)
 	//if err := utils.Verify(FacePatient, utils.FacePatientVerify); err != nil {
 	//	response.FailWithMessage(err.Error(), c)
@@ -46,7 +48,7 @@ func (e *FacePatientApi) CreateFacePatient(c *gin.Context) {
 // @Produce application/json
 // @Param data body face.FacePatient true "患者ID"
 // @Success 200 {object} response.Response{msg=string} "删除患者"
-// @Router /FacePatient/FacePatient [delete]
+// @Router /facePatient/facePatient [delete]
 func (e *FacePatientApi) DeleteFacePatient(c *gin.Context) {
 	var FacePatient face.FacePatient
 	_ = c.ShouldBindJSON(&FacePatient)
@@ -69,7 +71,7 @@ func (e *FacePatientApi) DeleteFacePatient(c *gin.Context) {
 // @Produce application/json
 // @Param data body face.FacePatient true "患者ID, 患者信息"
 // @Success 200 {object} response.Response{msg=string} "更新患者信息"
-// @Router /FacePatient/FacePatient [put]
+// @Router /facePatient/facePatient [put]
 func (e *FacePatientApi) UpdateFacePatient(c *gin.Context) {
 	var FacePatient face.FacePatient
 	_ = c.ShouldBindJSON(&FacePatient)
@@ -96,7 +98,7 @@ func (e *FacePatientApi) UpdateFacePatient(c *gin.Context) {
 // @Produce application/json
 // @Param data query face.FacePatient true "患者ID"
 // @Success 200 {object} response.Response{data=faceRes.FacePatientResponse,msg=string} "获取单一患者信息,返回包括患者详情"
-// @Router /FacePatient/FacePatient [get]
+// @Router /facePatient/facePatient [get]
 func (e *FacePatientApi) GetFacePatient(c *gin.Context) {
 	var FacePatient face.FacePatient
 	_ = c.ShouldBindQuery(&FacePatient)
@@ -105,6 +107,7 @@ func (e *FacePatientApi) GetFacePatient(c *gin.Context) {
 	//	return
 	//}
 	//data, err := facePatientService.GetFacePatient(FacePatient.ID)
+	fmt.Println("ID:", FacePatient.ID)
 	data, err := GetFacePatient_Son(FacePatient.ID)
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
@@ -130,7 +133,7 @@ func GetFacePatient_Son(patientId uint) (patient face.FacePatient, err error) {
 // @Produce application/json
 // @Param data query request.PageInfo true "页码, 每页大小"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "分页获取权限患者列表,返回包括列表,总数,页码,每页数量"
-// @Router /FacePatient/FacePatientList [get]
+// @Router /facePatient/facePatientList [get]
 func (e *FacePatientApi) GetFacePatientList(c *gin.Context) {
 	var pageInfo request.PageInfo
 	_ = c.ShouldBindQuery(&pageInfo)

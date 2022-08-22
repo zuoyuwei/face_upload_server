@@ -15,5 +15,5 @@ var (
 	facePhotoService         = service.ServiceGroupApp.FaceServiceGroup.FacePhotoService
 	faceVideoService         = service.ServiceGroupApp.FaceServiceGroup.FaceVideoService
 	faceMedicalRecordService = service.ServiceGroupApp.FaceServiceGroup.FaceMedicalRecordService
-	//personalUploadFileService = service.ServiceGroupApp.FaceServiceGroup.FaceVideoService
+	exaFileUploadFileService = service.ServiceGroupApp.ExampleServiceGroup.FileUploadAndDownloadService
 )

@@ -66,20 +66,42 @@ func (e *FileUploadAndDownloadService) EditFileName(file example.ExaFileUploadAn
 //@return: list interface{}, total int64, err error
 
 func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageInfo) (list interface{}, total int64, err error) {
+	return GetFileRecordInfoList_Son(info)
+}
+
+func (e *FileUploadAndDownloadService) GetFileRecordInfoList_A(info request.PageInfo) (list []example.ExaFileUploadAndDownload, total int64, err error) {
+	return GetFileRecordInfoList_Son(info)
+}
+
+func GetFileRecordInfoList_Son(info request.PageInfo) (list []example.ExaFileUploadAndDownload, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	keyword := info.Keyword
 	db := global.GVA_DB.Model(&example.ExaFileUploadAndDownload{})
-	var fileLists []example.ExaFileUploadAndDownload
-	if len(keyword) > 0 {
-		db = db.Where("name LIKE ?", "%"+keyword+"%")
+	if info.GuanLianId > 0 {
+		db.Where("medical_record_id=?", info.GuanLianId)
 	}
+	var fileList []example.ExaFileUploadAndDownload
 	err = db.Count(&total).Error
 	if err != nil {
-		return
+		return fileList, total, err
+	} else {
+		err = db.Limit(limit).Offset(offset).Find(&fileList).Error
 	}
-	err = db.Limit(limit).Offset(offset).Order("updated_at desc").Find(&fileLists).Error
-	return fileLists, total, err
+	return fileList, total, err
+	//limit := info.PageSize
+	//offset := info.PageSize * (info.Page - 1)
+	//keyword := info.Keyword
+	//db := global.GVA_DB.Model(&example.ExaFileUploadAndDownload{})
+	//var fileLists []example.ExaFileUploadAndDownload
+	//if len(keyword) > 0 {
+	//	db = db.Where("name LIKE ?", "%"+keyword+"%")
+	//}
+	//err = db.Count(&total).Error
+	//if err != nil {
+	//	return
+	//}
+	//err = db.Limit(limit).Offset(offset).Order("updated_at desc").Find(&fileLists).Error
+	//return fileLists, total, err
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -88,7 +110,7 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageIn
 //@param: header *multipart.FileHeader, noSave string
 //@return: file model.ExaFileUploadAndDownload, err error
 
-func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string, MedicalRecordId int, patientcode string, t string) (file example.ExaFileUploadAndDownload, err error) {
+func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string, MedicalRecordId int, patientcode string, t string, med_rec_id int) (file example.ExaFileUploadAndDownload, err error) {
 	oss := upload.NewOss()
 	filePath, key, uploadErr := oss.UploadFile(header)
 	if uploadErr != nil {

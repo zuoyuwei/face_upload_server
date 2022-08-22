@@ -1,7 +1,6 @@
 package face
 
 import (
-	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -24,7 +23,6 @@ type FaceMedicalRecordApi struct{}
 // @Router /FaceMedicalRecord/FaceMedicalRecord [post]
 func (e *FaceMedicalRecordApi) CreateFaceMedicalRecord(c *gin.Context) {
 	//fmt.Println("test")
-	fmt.Println("medical record:")
 	var FaceMedicalRecord face.FaceMedicalRecord
 	_ = c.ShouldBindJSON(&FaceMedicalRecord)
 	//if err := utils.Verify(FaceMedicalRecord, utils.FaceMedicalRecordVerify); err != nil {
@@ -106,13 +104,23 @@ func (e *FaceMedicalRecordApi) GetFaceMedicalRecord(c *gin.Context) {
 	//	response.FailWithMessage(err.Error(), c)
 	//	return
 	//}
-	data, err := faceMedicalRecordService.GetFaceMedicalRecord(FaceMedicalRecord.ID)
+	//data, err := faceMedicalRecordService.GetFaceMedicalRecord(FaceMedicalRecord.ID)
+	data, err := GetFaceMedicalRecord_Son(FaceMedicalRecord.ID)
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(faceRes.FaceMedicalRecordResponse{FaceMedicalRecord: data}, "获取成功", c)
 	}
+}
+
+func GetFaceMedicalRecord_Son(medicRecId uint) (medic_rec face.FaceMedicalRecord, err error) {
+	medic_rec, _ = faceMedicalRecordService.GetFaceMedicalRecord(medicRecId)
+	var pageInfo request.PageInfo
+	pageInfo.GuanLianId = int(medic_rec.ID)
+	fileList, _, err := exaFileUploadFileService.GetFileRecordInfoList_A(pageInfo)
+	medic_rec.FileList = fileList
+	return
 }
 
 // @Tags FaceMedicalRecord

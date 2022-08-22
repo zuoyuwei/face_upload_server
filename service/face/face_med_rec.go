@@ -54,12 +54,12 @@ func (exa *FaceMedicalRecordService) GetFaceMedicalRecord(id uint) (FaceMedicalR
 
 //@author: [piexlmax](https://github.com/piexlmax)
 //@function: FindFaceMedicalRecord
-//@description: 根据病历编号查询病历信息
+//@description: 根据病人编号查询病历信息
 //@param: patientcode string
 //@return: FaceMedicalRecord model.FaceMedicalRecord, err error
 
-func (exa *FaceMedicalRecordService) FindFaceMedicalRecord(patientcode string) (FaceMedicalRecord face.FaceMedicalRecord, err error) {
-	err = global.GVA_DB.Where("patient_code = ?", patientcode).First(&FaceMedicalRecord).Error
+func (exa *FaceMedicalRecordService) FindFaceMedicalRecord(medicalRecordId int) (FaceMedicalRecord face.FaceMedicalRecord, err error) {
+	err = global.GVA_DB.Where("id = ?", medicalRecordId).First(&FaceMedicalRecord).Error
 	return
 }
 

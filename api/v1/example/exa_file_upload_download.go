@@ -1,6 +1,7 @@
 package example
 
 import (
+	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -25,22 +26,27 @@ type FilePatientCode struct {
 // @accept multipart/form-data
 // @Produce  application/json
 // @Param file formData file true "上传文件示例"
-// @Param data query FilePatientCode true "患者编号,文件类型"
+// @Param data query medicalRecordId true "病历Id"
 // @Success 200 {object} response.Response{data=exampleRes.ExaFileResponse,msg=string} "上传文件示例,返回包括文件详情"
 // @Router /fileUploadAndDownload/upload [post]
 func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
-	var file example.ExaFileUploadAndDownload
+	var File example.ExaFileUploadAndDownload
 	noSave := c.DefaultQuery("noSave", "0")
 	_, header, err := c.Request.FormFile("file")
+	fmt.Println(header)
 	patientcode := c.Request.FormValue("patientCode")
 	tp := c.Request.FormValue("type")
+	//med_rec_id := c.Request.FormValue("medicalRecordId")
+	fmt.Println(c.ShouldBind(&File))
+	//fmt.Println("medical record ID:", File.MedicalRecordId)
+	med_rec_id := File.MedicalRecordId
 	if err != nil {
 		global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
 		response.FailWithMessage("接收文件失败", c)
 		return
 	}
 	//file, err = fileUploadAndDownloadService.UploadFile(header, noSave, patientcode, tp) // 文件上传后拿到文件路径
-	file, err = UploadFile_Son(header, noSave, patientcode, tp)
+	file, err := UploadFile_Son(header, noSave, patientcode, tp, med_rec_id)
 	if err != nil {
 		global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
 		response.FailWithMessage("修改数据库链接失败", c)
@@ -49,13 +55,13 @@ func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
 	response.OkWithDetailed(exampleRes.ExaFileResponse{File: file}, "上传成功", c)
 }
 
-func UploadFile_Son(header *multipart.FileHeader, noSave string, patientcode string, t string) (file example.ExaFileUploadAndDownload, err error) {
-	// 根据患者编号查询是否有此患者
+func UploadFile_Son(header *multipart.FileHeader, noSave string, patientcode string, t string, med_rec_id int) (file example.ExaFileUploadAndDownload, err error) {
+	// 根据病历Id查询是否有此病历
 	patientId := 0
 	medicalRecordId := 0
-	face_med_rec, err := faceMedicalRecordService.FindFaceMedicalRecord(patientcode)
+	face_med_rec, err := faceMedicalRecordService.FindFaceMedicalRecord(med_rec_id)
 	medicalRecordId = int(face_med_rec.ID)
-	// 如果有，继续下一步，如果没有，就新建患者
+	// 如果有，继续下一步，如果没有，就新建病历
 	if medicalRecordId == 0 {
 		var FacePatient modelFace.FacePatient
 		FacePatient.PatientCode = patientcode
@@ -67,7 +73,7 @@ func UploadFile_Son(header *multipart.FileHeader, noSave string, patientcode str
 		medicalRecordId, err = faceMedicalRecordService.CreateFaceMedicalRecord(FaceMedicalRecord)
 	}
 	// 建立联系
-	file, err = fileUploadAndDownloadService.UploadFile(header, noSave, medicalRecordId, patientcode, t) // 文件上传后拿到文件路径
+	file, err = fileUploadAndDownloadService.UploadFile(header, noSave, medicalRecordId, patientcode, t, med_rec_id) // 文件上传后拿到文件路径
 	return file, err
 }
 
