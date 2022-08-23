@@ -7,7 +7,7 @@ import (
 
 type FaceMedicalRecord struct {
 	global.GVA_MODEL
-	PatientName         string                             `json:"patientName" form:"patientName" gorm:"comment:客户名"`                      // 客户名
+	PatientName         string                             `json:"patientName" form:"patientName" gorm:"comment:患者姓名"`                     // 患者姓名
 	PatientCode         string                             `json:"patientCode" form:"patientCode" gorm:"comment:患者编号"`                     // 患者编号
 	PatientId           int                                `json:"patientId" form:"patientId" gorm:"comment:患者ID"`                         // 患者ID
 	IsAdenoidBodyLarge  string                             `json:"isAdenoidBodyLarge" form:"isAdenoidBodyLarge" gorm:"comment:有无腺样体肥大"`    // 有无腺样体肥大

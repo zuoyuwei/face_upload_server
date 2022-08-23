@@ -18,9 +18,9 @@ type FaceMedicalRecordApi struct{}
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body face.FaceMedicalRecord true "病历用户名, 病历手机号码"
+// @Param data body face.FaceMedicalRecord true "患者姓名, 患者编号, 有无腺样体肥大, 扁桃体级别, 是否张口呼吸, 牙齿有无白色沉积"
 // @Success 200 {object} response.Response{msg=string} "创建病历"
-// @Router /FaceMedicalRecord/FaceMedicalRecord [post]
+// @Router /faceMedicalRecord/faceMedicalRecord [post]
 func (e *FaceMedicalRecordApi) CreateFaceMedicalRecord(c *gin.Context) {
 	//fmt.Println("test")
 	var FaceMedicalRecord face.FaceMedicalRecord
@@ -46,7 +46,7 @@ func (e *FaceMedicalRecordApi) CreateFaceMedicalRecord(c *gin.Context) {
 // @Produce application/json
 // @Param data body face.FaceMedicalRecord true "病历ID"
 // @Success 200 {object} response.Response{msg=string} "删除病历"
-// @Router /FaceMedicalRecord/FaceMedicalRecord [delete]
+// @Router /faceMedicalRecord/faceMedicalRecord [delete]
 func (e *FaceMedicalRecordApi) DeleteFaceMedicalRecord(c *gin.Context) {
 	var FaceMedicalRecord face.FaceMedicalRecord
 	_ = c.ShouldBindJSON(&FaceMedicalRecord)
@@ -69,7 +69,7 @@ func (e *FaceMedicalRecordApi) DeleteFaceMedicalRecord(c *gin.Context) {
 // @Produce application/json
 // @Param data body face.FaceMedicalRecord true "病历ID, 病历信息"
 // @Success 200 {object} response.Response{msg=string} "更新病历信息"
-// @Router /FaceMedicalRecord/FaceMedicalRecord [put]
+// @Router /faceMedicalRecord/faceMedicalRecord [put]
 func (e *FaceMedicalRecordApi) UpdateFaceMedicalRecord(c *gin.Context) {
 	var FaceMedicalRecord face.FaceMedicalRecord
 	_ = c.ShouldBindJSON(&FaceMedicalRecord)
@@ -96,7 +96,7 @@ func (e *FaceMedicalRecordApi) UpdateFaceMedicalRecord(c *gin.Context) {
 // @Produce application/json
 // @Param data query face.FaceMedicalRecord true "病历ID"
 // @Success 200 {object} response.Response{data=faceRes.FaceMedicalRecordResponse,msg=string} "获取单一病历信息,返回包括病历详情"
-// @Router /FaceMedicalRecord/FaceMedicalRecord [get]
+// @Router /faceMedicalRecord/faceMedicalRecord [get]
 func (e *FaceMedicalRecordApi) GetFaceMedicalRecord(c *gin.Context) {
 	var FaceMedicalRecord face.FaceMedicalRecord
 	_ = c.ShouldBindQuery(&FaceMedicalRecord)
@@ -130,7 +130,7 @@ func GetFaceMedicalRecord_Son(medicRecId uint) (medic_rec face.FaceMedicalRecord
 // @Produce application/json
 // @Param data query request.PageInfo true "页码, 每页大小"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "分页获取权限病历列表,返回包括列表,总数,页码,每页数量"
-// @Router /FaceMedicalRecord/FaceMedicalRecordList [get]
+// @Router /faceMedicalRecord/faceMedicalRecordList [get]
 func (e *FaceMedicalRecordApi) GetFaceMedicalRecordList(c *gin.Context) {
 	var pageInfo request.PageInfo
 	_ = c.ShouldBindQuery(&pageInfo)

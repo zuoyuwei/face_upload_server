@@ -15,9 +15,10 @@ import (
 
 type FileUploadAndDownloadApi struct{}
 
-type FilePatientCode struct {
-	PatientCode string `json:"patientCode" form:"patientCode"`       // 患者编号
-	Type        string `json:"type" form:"type" gorm:"comment:文件类型"` // 文件类型(image, video)
+type FileInfo struct {
+	PatientCode     string `json:"patientCode" form:"patientCode"`                             // 患者编号
+	MedicalRecordId int    `json:"medicalRecordId" form:"medicalRecordId" gorm:"comment:病历ID"` // 病历ID
+	Type            string `json:"type" form:"type" gorm:"comment:文件类型"`                       // 文件类型(image, video)
 }
 
 // @Tags ExaFileUploadAndDownload
@@ -26,7 +27,7 @@ type FilePatientCode struct {
 // @accept multipart/form-data
 // @Produce  application/json
 // @Param file formData file true "上传文件示例"
-// @Param data query medicalRecordId true "病历Id"
+// @Param data query FileInfo true "患者编号,病历Id,文件类型"
 // @Success 200 {object} response.Response{data=exampleRes.ExaFileResponse,msg=string} "上传文件示例,返回包括文件详情"
 // @Router /fileUploadAndDownload/upload [post]
 func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {

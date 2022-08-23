@@ -19,7 +19,7 @@ type FacePatientApi struct{}
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body face.FacePatient true "患者用户名, 患者手机号码"
+// @Param data body face.FacePatient true "患者用户名, 患者手机号码等基本信息"
 // @Success 200 {object} response.Response{msg=string} "创建患者"
 // @Router /facePatient/facePatient [post]
 func (e *FacePatientApi) CreateFacePatient(c *gin.Context) {
@@ -27,6 +27,7 @@ func (e *FacePatientApi) CreateFacePatient(c *gin.Context) {
 	var FacePatient face.FacePatient
 	//fmt.Println(c.Request)
 	_ = c.ShouldBindJSON(&FacePatient)
+	fmt.Println("patientcode:", FacePatient.PatientCode)
 	//if err := utils.Verify(FacePatient, utils.FacePatientVerify); err != nil {
 	//	response.FailWithMessage(err.Error(), c)
 	//	return
