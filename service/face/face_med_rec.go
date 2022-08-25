@@ -64,6 +64,17 @@ func (exa *FaceMedicalRecordService) FindFaceMedicalRecord(medicalRecordId int) 
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
+//@function: FindFaceMedicalRecord_Son
+//@description: 根据患者编号查询病历信息
+//@param: patientcode string
+//@return: FaceMedicalRecord model.FaceMedicalRecord, err error
+
+func (exa *FaceMedicalRecordService) FindFaceMedicalRecord_Son(patientcode string) (FaceMedicalRecord face.FaceMedicalRecord, err error) {
+	err = global.GVA_DB.Where("patient_code = ?", patientcode).First(&FaceMedicalRecord).Error
+	return
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
 //@function: GetFaceMedicalRecordInfoList
 //@description: 分页获取病历列表
 //@param: sysUserAuthorityID string, info request.PageInfo

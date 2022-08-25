@@ -110,7 +110,7 @@ func GetFileRecordInfoList_Son(info request.PageInfo) (list []example.ExaFileUpl
 //@param: header *multipart.FileHeader, noSave string
 //@return: file model.ExaFileUploadAndDownload, err error
 
-func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string, MedicalRecordId int, patientcode string, t string, med_rec_id int) (file example.ExaFileUploadAndDownload, err error) {
+func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string, MedicalRecordId int, patientcode string, t string) (file example.ExaFileUploadAndDownload, err error) {
 	oss := upload.NewOss()
 	filePath, key, uploadErr := oss.UploadFile(header)
 	if uploadErr != nil {
@@ -129,5 +129,33 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 		}
 		return f, e.Upload(f)
 	}
+	return
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: DownloadFile
+//@description: 将文件下载到本地
+//@param: header *multipart.FileHeader, noSave string
+//@return: file model.ExaFileUploadAndDownload, err error
+
+func (e *FileUploadAndDownloadService) DownloadFile(name string) (file example.ExaFileUploadAndDownload, err error) {
+	oss := upload.NewOss()
+	downloadErr := oss.DownloadFile(name)
+	if downloadErr != nil {
+		panic(err)
+	}
+	//if noSave == "0" {
+	//	s := strings.Split(header.Filename, ".")
+	//	f := example.ExaFileUploadAndDownload{
+	//		MedicalRecordId: MedicalRecordId,
+	//		PatientCode:     patientcode,
+	//		Type:            t,
+	//		Url:             filePath,
+	//		Name:            header.Filename,
+	//		Tag:             s[len(s)-1],
+	//		Key:             key,
+	//	}
+	//	return f, e.Upload(f)
+	//}
 	return
 }

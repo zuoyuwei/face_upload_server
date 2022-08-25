@@ -23,9 +23,7 @@ type FacePatientApi struct{}
 // @Success 200 {object} response.Response{msg=string} "创建患者"
 // @Router /facePatient/facePatient [post]
 func (e *FacePatientApi) CreateFacePatient(c *gin.Context) {
-	//fmt.Println("test")
 	var FacePatient face.FacePatient
-	//fmt.Println(c.Request)
 	_ = c.ShouldBindJSON(&FacePatient)
 	fmt.Println("patientcode:", FacePatient.PatientCode)
 	//if err := utils.Verify(FacePatient, utils.FacePatientVerify); err != nil {

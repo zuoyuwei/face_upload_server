@@ -26,7 +26,8 @@ func (o *_obs) UploadFile(file *multipart.FileHeader) (filename string, filepath
 		PutObjectBasicInput: obs.PutObjectBasicInput{
 			ObjectOperationInput: obs.ObjectOperationInput{
 				Bucket: global.GVA_CONFIG.HuaWeiObs.Bucket,
-				Key:    global.GVA_CONFIG.HuaWeiObs.Path + "/" + filename,
+				Key:    filename,
+				//Key:    global.GVA_CONFIG.HuaWeiObs.Path + "/" + filename,
 			},
 			ContentType: file.Header.Get("content-type"),
 		},
@@ -58,6 +59,22 @@ func (o *_obs) DeleteFile(key string) error {
 	}
 	var output *obs.DeleteObjectOutput
 	output, err = client.DeleteObject(input)
+	if err != nil {
+		return errors.Wrapf(err, "删除对象(%s)失败!, output: %v", key, output)
+	}
+	return nil
+}
+
+func (o *_obs) DownloadFile(key string) error {
+	client, err := NewHuaWeiObsClient()
+	if err != nil {
+		return errors.Wrap(err, "获取华为对象存储对象失败!")
+	}
+	input := &obs.DownloadFileInput{}
+	input.Bucket = global.GVA_CONFIG.HuaWeiObs.Bucket
+	input.Key = key
+	extensions := []string{"jpg", "png", "mov", "mp4"}
+	output, err := client.DownloadFile(input, extensions)
 	if err != nil {
 		return errors.Wrapf(err, "删除对象(%s)失败!, output: %v", key, output)
 	}

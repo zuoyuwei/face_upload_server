@@ -84,3 +84,16 @@ func (*Local) DeleteFile(key string) error {
 	}
 	return nil
 }
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@author: [ccfish86](https://github.com/ccfish86)
+//@author: [SliverHorn](https://github.com/SliverHorn)
+//@object: *Local
+//@function: DownloadFile
+//@description: 下载文件
+//@param: key string
+//@return: error
+
+func (*Local) DownloadFile(key string) error {
+	return nil
+}
